@@ -29,20 +29,23 @@ def mage_stats(mages: list[dict]) -> dict:
 
 
 def main() -> None:
-    print()
-    print("Testing artifact sorter...")
-    artifacts: list[dict] = [
-        {'name': 'Crystal Orb', 'power': 85, 'type': 'crystal'},
-        {'name': 'Fire Staff', 'power': 92, 'type': 'fire'}
-    ]
-    sorted_artifacts: list[dict] = artifact_sorter(artifacts)
-    print(f"{sorted_artifacts[0].get('name')} "
-          f"({sorted_artifacts[0].get('power')} power) comes before "
-          f"{sorted_artifacts[1].get('name')} "
-          f"({sorted_artifacts[1].get('power')} power)")
-    print()
-    print("Testing spell transformer...")
-    print(spell_transformer(['fireball', 'heal', 'shield']))
+    try:
+        print()
+        print("Testing artifact sorter...")
+        artifacts: list[dict] = [
+            {'name': 'Crystal Orb', 'power': 85, 'type': 'crystal'},
+            {'name': 'Fire Staff', 'power': 92, 'type': 'fire'}
+        ]
+        sorted_artifacts: list[dict] = artifact_sorter(artifacts)
+        print(f"{sorted_artifacts[0].get('name')} "
+              f"({sorted_artifacts[0].get('power')} power) comes before "
+              f"{sorted_artifacts[1].get('name')} "
+              f"({sorted_artifacts[1].get('power')} power)")
+        print()
+        print("Testing spell transformer...")
+        print(spell_transformer(['fireball', 'heal', 'shield']))
+    except (ValueError, TypeError, IndexError, KeyError) as error:
+        print(error)
 
 
 if __name__ == "__main__":
