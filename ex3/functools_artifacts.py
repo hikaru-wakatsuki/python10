@@ -4,7 +4,7 @@ from operator import add, mul
 
 def spell_reducer(spells: list[int], operation: str) -> int:
     if not spells:
-        ValueError("spells list cannot be empty")
+        raise ValueError("spells list cannot be empty")
     operations = {
         "add": add,
         "multiply": mul,
@@ -35,7 +35,7 @@ def memoized_fibonacci(n: int) -> int:
 
 def spell_dispatcher() -> callable:
     @singledispatch
-    def cast_spell(arg):
+    def cast_spell(arg) -> callable:
         return "Unknown spell type"
 
     @cast_spell.register
@@ -49,6 +49,7 @@ def spell_dispatcher() -> callable:
     @cast_spell.register
     def _(arg: list) -> str:
         return f"Casting multi-spell sequence: {', '.join(map(str, arg))}"
+    return cast_spell
 
 
 if __name__ == "__main__":
