@@ -1,5 +1,5 @@
 from functools import reduce, partial, lru_cache, singledispatch
-from operator import add, mul
+from operator import add, mul, gt, lt
 
 
 def spell_reducer(spells: list[int], operation: str) -> int:
@@ -8,8 +8,8 @@ def spell_reducer(spells: list[int], operation: str) -> int:
     operations = {
         "add": add,
         "multiply": mul,
-        "max": lambda x, y: x if x > y else y,
-        "min": lambda x, y: x if x < y else y
+        "max": lambda x, y: x if gt(x, y) else y,
+        "min": lambda x, y: x if lt(x, y) else y
     }
     if operation not in operations:
         raise ValueError("invalid operation")
@@ -35,7 +35,7 @@ def memoized_fibonacci(n: int) -> int:
 
 def spell_dispatcher() -> callable:
     @singledispatch
-    def cast_spell(arg) -> callable:
+    def cast_spell(arg) -> str:
         return "Unknown spell type"
 
     @cast_spell.register
@@ -53,12 +53,15 @@ def spell_dispatcher() -> callable:
 
 
 if __name__ == "__main__":
-    print()
-    print("Testing spell reducer...")
-    print(f"Sum: {spell_reducer([40, 60], 'add')}")
-    print(f"Product: {spell_reducer([40, 6000], 'multiply')}")
-    print(f"Max: {spell_reducer([40, 6], 'max')}")
-    print()
-    print("Testing memoized fibonacci...")
-    print(f"Fib(10): {memoized_fibonacci(10)}")
-    print(f"Fib(15): {memoized_fibonacci(15)}")
+    try:
+        print()
+        print("Testing spell reducer...")
+        print(f"Sum: {spell_reducer([40, 60], 'add')}")
+        print(f"Product: {spell_reducer([40, 6000], 'multiply')}")
+        print(f"Max: {spell_reducer([40, 6], 'max')}")
+        print()
+        print("Testing memoized fibonacci...")
+        print(f"Fib(10): {memoized_fibonacci(10)}")
+        print(f"Fib(15): {memoized_fibonacci(15)}")
+    except ValueError as error:
+        print(error)
