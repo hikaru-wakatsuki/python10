@@ -1,16 +1,22 @@
+from typing import Any
+
+
 def spell_combiner(spell1: callable, spell2: callable) -> callable:
-    def combined(*args, **kwargs) -> callable:
+    def combined(*args, **kwargs) -> tuple[Any, Any] | str:
         try:
             result1 = spell1(*args, **kwargs)
-            result2 = spell2(*args, **kwargs)
-            return (result1, result2)
         except Exception as error:
-            return f"Spell combination failed: {error}"
+            return f"Spell1 combination failed: {error}"
+        try:
+            result2 = spell2(*args, **kwargs)
+        except Exception as error:
+            return f"Spell2 combination failed: {error}"
+        return (result1, result2)
     return combined
 
 
 def power_amplifier(base_spell: callable, multiplier: int) -> callable:
-    def amplifier(*args, **kwargs) -> callable:
+    def amplifier(*args, **kwargs) -> int | float | str:
         try:
             return base_spell(*args, **kwargs) * multiplier
         except Exception as error:
@@ -19,7 +25,7 @@ def power_amplifier(base_spell: callable, multiplier: int) -> callable:
 
 
 def conditional_caster(condition: callable, spell: callable) -> callable:
-    def caster(*args, **kwargs) -> callable:
+    def caster(*args, **kwargs) -> Any | str:
         try:
             if condition(*args, **kwargs):
                 return spell(*args, **kwargs)
@@ -30,7 +36,7 @@ def conditional_caster(condition: callable, spell: callable) -> callable:
 
 
 def spell_sequence(spells: list[callable]) -> callable:
-    def sequence(*args, **kwargs) -> callable:
+    def sequence(*args, **kwargs) -> list[Any]:
         result: list = []
         for spell in spells:
             try:

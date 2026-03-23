@@ -1,6 +1,9 @@
 def artifact_sorter(artifacts: list[dict]) -> list[dict]:
     if not all('power' in artifact for artifact in artifacts):
         raise ValueError("artifact missing 'power' field")
+    if not all(isinstance(artifact.get('power'), int)
+               for artifact in artifacts):
+        raise ValueError("artifact power must be int")
     return sorted(
         artifacts, key=lambda artifact: artifact['power'], reverse=True)
 
@@ -8,6 +11,8 @@ def artifact_sorter(artifacts: list[dict]) -> list[dict]:
 def power_filter(mages: list[dict], min_power: int) -> list[dict]:
     if not all('power' in mage for mage in mages):
         raise ValueError("mage missing 'power' field")
+    if not all(isinstance(mage.get('power'), int) for mage in mages):
+        raise ValueError("mage power must be int")
     return list(filter(lambda mage: mage['power'] >= min_power, mages))
 
 
@@ -20,6 +25,8 @@ def mage_stats(mages: list[dict]) -> dict:
         raise ValueError("mages list cannot be empty")
     if not all('power' in mage for mage in mages):
         raise ValueError("mage missing 'power' field")
+    if not all(isinstance(mage.get('power'), int) for mage in mages):
+        raise ValueError("mage power must be int")
     return {
         'max_power': max(mages, key=lambda mage: mage['power'])['power'],
         'min_power': min(mages, key=lambda mage: mage['power'])['power'],
