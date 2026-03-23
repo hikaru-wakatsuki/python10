@@ -5,13 +5,13 @@ from typing import Any
 
 def spell_timer(func: callable) -> callable:
     @wraps(func)
-    def wrapper(*argc, **kwargs) -> Any:
+    def wrapper(*argc, **kwargs) -> Any | str:
         print(f"Casting {func.__name__}...")
         start: float = time()
         try:
             result: Any = func(*argc, **kwargs)
         except Exception as error:
-            raise Exception(f"Function execution failed: {error}")
+            return (f"Function execution failed: {error}")
         end: float = time()
         print(f"Spell completed in {end - start} seconds")
         return result
@@ -24,7 +24,7 @@ def power_validator(min_power: int) -> callable:
 
     def decorator(func: callable) -> callable:
         @wraps(func)
-        def wrapper(self, power: int, *argc, **kwargs) -> Any:
+        def wrapper(self, power: int, *argc, **kwargs) -> Any | str:
             if not isinstance(power, int):
                 raise TypeError("power must be an integer")
             if power < min_power:
@@ -32,7 +32,7 @@ def power_validator(min_power: int) -> callable:
             try:
                 return func(self, power, *argc, **kwargs)
             except Exception as error:
-                raise Exception(f"Function execution failed: {error}")
+                return (f"Function execution failed: {error}")
         return wrapper
     return decorator
 
@@ -87,5 +87,5 @@ if __name__ == "__main__":
         print(mage_guild.validate_mage_name('123 456'))
         print(mage_guild.cast_spell(15, 'Lightning'))
         print(mage_guild.cast_spell(1, 'Lightning'))
-    except Exception as error:
+    except (ValueError, TypeError) as error:
         print(error)
