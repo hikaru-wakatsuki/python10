@@ -49,8 +49,7 @@ def spell_dispatcher() -> callable:
     @cast_spell.register
     def _(arg: list) -> str:
         return (
-            f"Casting multi-spell sequence: {', '.join([str(x) for x in arg])}"
-            )
+            f"Casting multi-spell sequence: {', '.join(map(str, arg))}")
     return cast_spell
 
 
