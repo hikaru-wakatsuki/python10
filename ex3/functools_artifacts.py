@@ -17,6 +17,11 @@ def spell_reducer(spells: list[int], operation: str) -> int:
 
 
 def partial_enchanter(base_enchantment: callable) -> dict[str, callable]:
+    try:
+        base_enchantment(0, "fire", "dummy_target")
+    except TypeError:
+        raise ValueError("base_enchantment must accept exactly 3 arguments "
+                         "(power, element, target)")
     return {
         'fire_enchant': partial(base_enchantment, 50, 'fire'),
         'ice_enchant': partial(base_enchantment, 50, 'ice'),
